@@ -1,0 +1,9 @@
+node_modules
+.env
+coverage
+tmp
+!tmp/.gitkeep
+uploads
+!uploads/.gitkeep
+dist
+lib

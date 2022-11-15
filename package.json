@@ -1,0 +1,49 @@
+{
+  "name": "http-bounded-context",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "npx tsc",
+    "lint": "npx eslint --fix --ext .ts,.js .",
+    "clear": "rm -rf ./lib",
+    "prebuild": "npm run clear"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/multer": "^1.4.7",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "2.7.1",
+    "typescript": "^4.5.4"
+  },
+  "peerDependencies": {
+    "cors": "2.x",
+    "express": "4.x",
+    "express-async-errors": "3.x",
+    "multer": "1.x"
+  },
+  "peerDependenciesMeta": {
+    "cors": {
+      "optional": true
+    },
+    "express": {
+      "optional": true
+    },
+    "express-async-errors": {
+      "optional": true
+    },
+    "multer": {
+      "optional": true
+    }
+  },
+  "files": [
+    "lib/**"
+  ]
+}
