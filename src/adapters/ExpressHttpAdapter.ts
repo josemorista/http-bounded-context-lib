@@ -74,7 +74,7 @@ export class ExpressHttpAdapter extends Http {
           const response = await handle(ctx);
           return this.sendResponse(res, response);
         } catch (error) {
-          if (this.errorHandler) {
+          if (error instanceof Error && this.errorHandler) {
             return this.sendResponse(res, await this.errorHandler(error, ctx));
           }
           throw error;
