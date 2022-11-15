@@ -1,5 +1,5 @@
 {
-  "name": "http-bounded-context",
+  "name": "http-bounded-context-lib",
   "version": "1.0.0",
   "description": "",
   "scripts": {
