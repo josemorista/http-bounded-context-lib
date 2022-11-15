@@ -8,6 +8,9 @@
     "clear": "rm -rf ./lib",
     "prebuild": "npm run clear"
   },
+  "repository": {
+    "url": "https://github.com/josemorista/http-bounded-context-lib"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
