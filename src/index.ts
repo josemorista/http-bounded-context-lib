@@ -1,15 +1,36 @@
-export { HttpController } from './controllers/HttpController';
+import { ExpressServerAdapter } from './adapters/express/ExpressServerAdapter';
+import { HttpHandler } from './entities/HttpHandler';
 
-//Entities
-export { Http } from './entities/Http';
-export { HttpContext } from './entities/HttpContext';
-export { HttpErrorHandleFunction } from './entities/HttpErrorHandleFunction';
-export { HttpHandleFunction } from './entities/HttpHandleFunction';
-export { HttpHandleOptions } from './entities/HttpHandleOptions';
-export { HttpJsonResponse } from './entities/HttpJsonResponse';
-export { HttpMiddleware } from './entities/HttpMiddleware';
-export { HttpResponse } from './entities/HttpResponse';
-export { Router } from './entities/Router';
+const server = new ExpressServerAdapter({
+  uploadDir: __dirname,
+});
 
-// Adapters
-export { ExpressHttpAdapter } from './adapters/ExpressHttpAdapter';
+const debug: HttpHandler = async (request, _, next) => {
+  console.log('[URL]', request.url);
+  console.log('[PATH]', request.path);
+  console.group('[HEADERS]');
+  console.table(request.headers);
+  console.groupEnd();
+
+  console.group('[QUERY]');
+  console.table(request.query);
+  console.groupEnd();
+
+  console.group('[PARAMS]');
+  console.table(request.params);
+  console.groupEnd();
+
+  console.log('[BODY]', request.body);
+  request.state.debug = true;
+  return next();
+};
+
+server.post('/hello/:id', debug, async (request, response) => {
+  return response.json({
+    message: 'Hello world',
+  });
+});
+
+server.listen(3000, () => {
+  console.log('Server is online');
+});
