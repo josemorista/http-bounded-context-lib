@@ -1,11 +1,4 @@
-interface HttpRequestFile {
-  filename: string;
-  mimetype: string;
-  originalname: string;
-  fieldname: string;
-  size: number;
-  path: string;
-}
+import { HttpRequestFile } from './HttpRequestFile';
 
 export class HttpRequest {
   url: string;

@@ -1,36 +1,8 @@
-import { ExpressServerAdapter } from './adapters/express/ExpressServerAdapter';
-import { HttpHandler } from './entities/HttpHandler';
+export { ExpressServerAdapter } from './adapters/express/ExpressServerAdapter';
 
-const server = new ExpressServerAdapter({
-  uploadDir: __dirname,
-});
-
-const debug: HttpHandler = async (request, _, next) => {
-  console.log('[URL]', request.url);
-  console.log('[PATH]', request.path);
-  console.group('[HEADERS]');
-  console.table(request.headers);
-  console.groupEnd();
-
-  console.group('[QUERY]');
-  console.table(request.query);
-  console.groupEnd();
-
-  console.group('[PARAMS]');
-  console.table(request.params);
-  console.groupEnd();
-
-  console.log('[BODY]', request.body);
-  request.state.debug = true;
-  return next();
-};
-
-server.post('/hello/:id', debug, async (request, response) => {
-  return response.json({
-    message: 'Hello world',
-  });
-});
-
-server.listen(3000, () => {
-  console.log('Server is online');
-});
+// Entities
+export { HttpHandler } from './entities/HttpHandler';
+export { HttpRequest } from './entities/HttpRequest';
+export { HttpResponse } from './entities/HttpResponse';
+export { HttpRequestFile } from './entities/HttpRequestFile';
+export { Server } from './entities/Server';
