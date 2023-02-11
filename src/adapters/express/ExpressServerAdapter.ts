@@ -61,11 +61,18 @@ export class ExpressServerAdapter extends Server {
     this.app[method](path, this.multer.any(), async (req, res) => {
       const request = this.parseRequest(req);
       const response = new HttpResponse();
-      for (const middleware of middlewares) {
-        const handlerResponse = await middleware(request, response, (error) => {
-          if (error) throw error;
-        });
-        if (handlerResponse && handlerResponse instanceof HttpResponse) return this.parseResponse(res, handlerResponse);
+      try {
+        for (const middleware of middlewares) {
+          const handlerResponse = await middleware(request, response, (error) => {
+            if (error) throw error;
+          });
+          if (handlerResponse && handlerResponse instanceof HttpResponse)
+            return this.parseResponse(res, handlerResponse);
+        }
+      } catch (error) {
+        if (error instanceof Error && this.onError)
+          return this.parseResponse(res, this.onError(request, response, error));
+        throw error;
       }
     });
   }
