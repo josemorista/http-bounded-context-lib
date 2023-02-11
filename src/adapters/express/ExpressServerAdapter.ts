@@ -5,14 +5,16 @@ import express, { Application, Response, Request } from 'express';
 import 'express-async-errors';
 import multer from 'multer';
 import { HttpRequest } from '../../entities/HttpRequest';
+import cors from 'cors';
 
 export class ExpressServerAdapter extends Server {
   private app: Application;
   private multer: multer.Multer;
 
-  constructor(config: Server['config']) {
+  constructor(config?: Server['config'], corsOptions?: cors.CorsOptions) {
     super(config);
     this.app = express();
+    this.app.use(cors(corsOptions));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 

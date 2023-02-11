@@ -1,4 +1,7 @@
-export { ExpressServerAdapter } from './adapters/express/ExpressServerAdapter';
+// Import loaders
+export const ExpressServerAdapterLoader = import('./adapters/express/ExpressServerAdapter').then(
+  (module) => module.ExpressServerAdapter
+);
 
 // Entities
 export { HttpHandler } from './entities/HttpHandler';
