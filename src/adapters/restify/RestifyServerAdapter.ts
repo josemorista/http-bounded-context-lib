@@ -78,9 +78,10 @@ export class RestifyServerAdapter extends Server {
       value && res.setHeader(name, value);
     }
     if (response.headers['content-type'] === 'application/json') {
-      return res.json(response.body);
+      res.json(response.body);
+      return;
     }
-    return res.send(response.body);
+    res.send(response.body);
   }
 
   protected on(
