@@ -1,16 +1,18 @@
+import { HttpObject } from './HttpObject';
 import { HttpRequestFile } from './HttpRequestFile';
 
-export class HttpRequest {
+export class HttpRequest extends HttpObject {
   url: string;
   path: string;
   query: Record<string, string | Array<string> | undefined>;
-  headers: Record<string, string>;
-  params: Record<string, string>
+  headers: Record<string, string | Array<string> | undefined>;
+  params: Record<string, string>;
   body?: any;
   files: Array<HttpRequestFile>;
   [key: string]: any;
 
-  constructor(input: Omit<HttpRequest, 'state' | 'files'>) {
+  constructor(input: Omit<HttpRequest, 'files'>) {
+    super();
     this.body = input.body;
     this.path = input.path;
     this.headers = input.headers;

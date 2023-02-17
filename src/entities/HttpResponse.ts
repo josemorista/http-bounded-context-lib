@@ -1,16 +1,12 @@
-export class HttpResponse {
+import { HttpObject } from './HttpObject';
+
+export class HttpResponse extends HttpObject {
   statusCode: number;
-  headers: Record<string, string>;
-  body?: any;
 
   constructor() {
+    super();
     this.body = '';
     this.statusCode = 200;
-    this.headers = {};
-  }
-
-  setHeader(name: string, value: string) {
-    this.headers[name] = value;
   }
 
   send(body: unknown) {
@@ -21,6 +17,16 @@ export class HttpResponse {
   json(body: unknown) {
     this.setHeader('content-type', 'application/json');
     this.body = body;
+    return this;
+  }
+
+  status(status: number) {
+    this.statusCode = status;
+  }
+
+  sendStatus(status: number) {
+    this.statusCode = status;
+    this.body = '';
     return this;
   }
 }

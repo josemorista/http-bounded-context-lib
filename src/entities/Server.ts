@@ -3,7 +3,7 @@ import { HttpRequest } from './HttpRequest';
 import { HttpResponse } from './HttpResponse';
 import { tmpdir } from 'os';
 
-interface ServerOptions {
+export interface ServerOptions {
   uploadDir: string;
 }
 

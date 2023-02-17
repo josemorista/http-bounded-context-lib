@@ -1,10 +1,11 @@
 import { HttpHandler } from '../../entities/HttpHandler';
 import { HttpResponse } from '../../entities/HttpResponse';
 import { Server } from '../../entities/Server';
+import { HttpRequest } from '../../entities/HttpRequest';
+
 import express, { Application, Response, Request } from 'express';
 import 'express-async-errors';
 import multer from 'multer';
-import { HttpRequest } from '../../entities/HttpRequest';
 import cors from 'cors';
 
 export class ExpressServerAdapter extends Server {
@@ -26,7 +27,7 @@ export class ExpressServerAdapter extends Server {
   private parseResponse(res: Response, response: HttpResponse) {
     res.status(response.statusCode);
     for (const [name, value] of Object.entries(response.headers)) {
-      res.setHeader(name, value);
+      value && res.setHeader(name, value);
     }
     if (response.headers['content-type'] === 'application/json') {
       return res.json(response.body);
@@ -36,15 +37,12 @@ export class ExpressServerAdapter extends Server {
 
   private parseRequest(req: Request) {
     const query: HttpRequest['query'] = {};
-    const headers: HttpRequest['headers'] = {};
     for (const [key, value] of Object.entries(req.query)) {
       query[key] = Array.isArray(value) ? value.map((el) => String(el)) : String(value);
     }
-    for (const [name, value] of Object.entries(req.headers)) {
-      headers[name] = String(value);
-    }
+
     const request = new HttpRequest({
-      headers,
+      headers: req.headers,
       query,
       params: req.params,
       url: req.url,
