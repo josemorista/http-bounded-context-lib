@@ -10,7 +10,7 @@ export class HttpObject {
     this.cookies = {};
   }
 
-  setCookie(name: string, value: string, options: CookieSerializeOptions) {
+  setCookie(name: string, value: string, options?: CookieSerializeOptions) {
     this.cookies[name] = value;
     this.setHeader('set-cookie', serialize(name, value, options));
   }

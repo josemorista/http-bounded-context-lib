@@ -1,6 +1,6 @@
 import { HttpHandler } from '../../entities/HttpHandler';
 import { HttpResponse } from '../../entities/HttpResponse';
-import { Server } from '../../entities/Server';
+import { Server, ServerOptions } from '../../entities/Server';
 import { HttpRequest } from '../../entities/HttpRequest';
 
 import express, { Application, Response, Request } from 'express';
@@ -12,7 +12,7 @@ export class ExpressServerAdapter extends Server {
   private app: Application;
   private multer: multer.Multer;
 
-  constructor(config?: Server['config'], corsOptions?: cors.CorsOptions) {
+  constructor(config: ServerOptions, corsOptions?: cors.CorsOptions) {
     super(config);
     this.app = express();
     this.app.use(cors(corsOptions));

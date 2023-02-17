@@ -11,7 +11,7 @@ export class HttpRequest extends HttpObject {
   files: Array<HttpRequestFile>;
   [key: string]: any;
 
-  constructor(input: Omit<HttpRequest, 'files'>) {
+  constructor(input: Pick<HttpRequest, 'body' | 'path' | 'url' | 'headers' | 'params' | 'query'>) {
     super();
     this.body = input.body;
     this.path = input.path;

@@ -4,14 +4,18 @@ import { HttpResponse } from './HttpResponse';
 import { tmpdir } from 'os';
 
 export interface ServerOptions {
-  uploadDir: string;
+  uploadDir?: string;
 }
 
 type HttpErrorFn = (request: HttpRequest, response: HttpResponse, error: Error) => HttpResponse;
 export abstract class Server {
   onError?: HttpErrorFn;
+  config: ServerOptions;
 
-  constructor(public config: ServerOptions = { uploadDir: tmpdir() }) {}
+  constructor(config: ServerOptions) {
+    this.config = config || {};
+    this.config.uploadDir = config?.uploadDir || tmpdir();
+  }
 
   protected abstract on(
     method: 'get' | 'post' | 'patch' | 'delete' | 'options' | 'put',

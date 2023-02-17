@@ -1,6 +1,7 @@
 import { HttpHandler } from '../../entities/HttpHandler';
 import { Server, ServerOptions } from '../../entities/Server';
 import corsMiddleware, { Options } from 'restify-cors-middleware2';
+import { basename } from 'path';
 import {
   createServer,
   plugins,
@@ -16,13 +17,22 @@ type RestifyServerAdapterOptions = RestifyOptions & {
   corsOptions: Options;
 };
 
+const handlerDict = {
+  get: 'get',
+  post: 'post',
+  patch: 'patch',
+  delete: 'del',
+  put: 'put',
+  options: 'opts',
+} as const;
+
 export class RestifyServerAdapter extends Server {
   private app: RestifyServer;
 
-  constructor(config: ServerOptions, options: RestifyServerAdapterOptions) {
+  constructor(config: ServerOptions, options?: RestifyServerAdapterOptions) {
     super(config);
     this.app = createServer(options);
-    const cors = corsMiddleware(options.corsOptions);
+    const cors = corsMiddleware(options?.corsOptions || {});
     this.app.pre(cors.preflight);
     this.app.use(cors.actual);
     this.app.use(plugins.fullResponse());
@@ -53,7 +63,7 @@ export class RestifyServerAdapter extends Server {
         request.files.push({
           fieldname: name,
           originalname: file.name || '',
-          filename: file.name || '',
+          filename: basename(file.path),
           size: file.size,
           mimetype: file.type || '',
           path: file.path,
@@ -78,16 +88,7 @@ export class RestifyServerAdapter extends Server {
     path: string,
     middlewares: HttpHandler[]
   ): void {
-    const handler = {
-      get: this.app.get,
-      post: this.app.post,
-      patch: this.app.patch,
-      delete: this.app.del,
-      put: this.app.put,
-      options: this.app.opts,
-    };
-
-    handler[method](path, async (req, res) => {
+    this.app[handlerDict[method]](path, async (req, res) => {
       const request = this.parseRequest(req);
       const response = new HttpResponse();
       try {
