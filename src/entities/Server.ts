@@ -24,6 +24,7 @@ export abstract class Server {
   ): void;
 
   abstract listen(port: number, callback: () => void): void;
+  abstract close(): Promise<void>;
 
   setErrorHandler(onError: HttpErrorFn) {
     this.onError = onError;

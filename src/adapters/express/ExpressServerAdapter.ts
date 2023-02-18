@@ -2,6 +2,7 @@ import { HttpHandler } from '../../entities/HttpHandler';
 import { HttpResponse } from '../../entities/HttpResponse';
 import { Server, ServerOptions } from '../../entities/Server';
 import { HttpRequest } from '../../entities/HttpRequest';
+import { Server as NativeServer } from 'http';
 
 import express, { Application, Response, Request } from 'express';
 import 'express-async-errors';
@@ -11,6 +12,7 @@ import cors from 'cors';
 export class ExpressServerAdapter extends Server {
   private app: Application;
   private multer: multer.Multer;
+  private listener?: NativeServer;
 
   constructor(config: ServerOptions, corsOptions?: cors.CorsOptions) {
     super(config);
@@ -37,8 +39,10 @@ export class ExpressServerAdapter extends Server {
 
   private parseRequest(req: Request) {
     const query: HttpRequest['query'] = {};
-    for (const [key, value] of Object.entries(req.query)) {
-      query[key] = Array.isArray(value) ? value.map((el) => String(el)) : String(value);
+    const url = new URL(`http://localhost${req.originalUrl}`);
+    for (const key of url.searchParams.keys()) {
+      const values = url.searchParams.getAll(key);
+      query[key] = values.length > 1 ? values : values[0];
     }
 
     const request = new HttpRequest({
@@ -78,6 +82,14 @@ export class ExpressServerAdapter extends Server {
   }
 
   listen(port: number, callback: () => void): void {
-    this.app.listen(port, callback);
+    this.listener = this.app.listen(port, callback);
+  }
+
+  close() {
+    return new Promise<void>((resolve) => {
+      this.listener?.close(() => {
+        resolve();
+      });
+    });
   }
 }

@@ -111,4 +111,8 @@ export class RestifyServerAdapter extends Server {
   listen(port: number, callback: () => void): void {
     this.app.listen(port, callback);
   }
+
+  close() {
+    return new Promise<void>((resolve) => this.app.close(resolve));
+  }
 }
