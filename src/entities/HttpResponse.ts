@@ -10,6 +10,9 @@ export class HttpResponse extends HttpObject {
   }
 
   send(body: unknown) {
+    if (!this.getHeader('content-type')) {
+      this.setHeader('content-type', 'text/html');
+    }
     this.body = body;
     return this;
   }

@@ -5,7 +5,7 @@ export default async (infra: 'express' | 'restify') => {
   const ServerClass = infra === 'express' ? await ExpressServerAdapterLoader : await RestifyServerAdapterLoader;
   const server = new ServerClass({});
 
-  server.get('/', async (request, response) => {
+  server.get('/json', async (request, response) => {
     return response.json(request);
   });
 
@@ -17,24 +17,12 @@ export default async (infra: 'express' | 'restify') => {
     return response.send('Hello world');
   });
 
-  server.get('/params/:id', async (request, response) => {
-    return response.json(request.params);
-  });
-
-  server.post('/', async (request, response) => {
-    return response.json(request);
-  });
-
-  server.patch('/', async (request, response) => {
-    return response.json(request);
-  });
-
-  server.delete('/', async (request, response) => {
+  server.get('/json/params/:id', async (request, response) => {
     return response.json(request);
   });
 
   server.get(
-    '/middleware',
+    '/json/middleware',
     async (request, response) => {
       if (request.query.skipMiddleware === 'true') {
         request.middlewareSkipped = true;
@@ -46,6 +34,27 @@ export default async (infra: 'express' | 'restify') => {
       return response.json(request);
     }
   );
+
+  server.post('/json', async (request, response) => {
+    response.status(201);
+    return response.json(request);
+  });
+
+  server.put('/json', async (request, response) => {
+    return response.json(request);
+  });
+
+  server.patch('/json', async (request, response) => {
+    return response.json(request);
+  });
+
+  server.del('/json', async (request, response) => {
+    return response.json(request);
+  });
+
+  server.opts('/status', async (request, response) => {
+    return response.sendStatus(204);
+  });
 
   return new Promise<Server>((resolve) => {
     server.listen(3000, () => {

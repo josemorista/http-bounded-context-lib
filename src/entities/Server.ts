@@ -46,11 +46,11 @@ export abstract class Server {
     this.on('patch', path, middlewares);
   }
 
-  delete(path: string, ...middlewares: Array<HttpHandler>) {
+  del(path: string, ...middlewares: Array<HttpHandler>) {
     this.on('delete', path, middlewares);
   }
 
-  options(path: string, ...middlewares: Array<HttpHandler>) {
+  opts(path: string, ...middlewares: Array<HttpHandler>) {
     this.on('options', path, middlewares);
   }
 }

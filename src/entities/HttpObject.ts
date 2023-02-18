@@ -18,4 +18,8 @@ export class HttpObject {
   setHeader(name: string, value: string) {
     this.headers[name.toLowerCase()] = value;
   }
+
+  getHeader(name: string) {
+    return this.headers[name.toLowerCase()];
+  }
 }

@@ -77,7 +77,8 @@ export class RestifyServerAdapter extends Server {
     for (const [name, value] of Object.entries(response.headers)) {
       value && res.setHeader(name, value);
     }
-    if (response.headers['content-type'] === 'application/json') {
+    const contentType = response.getHeader('content-type');
+    if (contentType && contentType.toString().startsWith('application/json')) {
       res.json(response.body);
       return;
     }

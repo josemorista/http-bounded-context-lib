@@ -31,19 +31,34 @@
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.4.3",
     "prettier": "2.7.1",
-    "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",
     "typescript": "^4.5.4"
   },
   "files": [
     "lib/**"
   ],
+  "peerDependencies": {
+    "cors": "2.x",
+    "express": "4.x",
+    "express-async-errors": "3.x",
+    "multer": "1.x"
+  },
+  "peerDependenciesMeta": {
+    "express": {
+      "optional": true
+    },
+    "express-async-errors": {
+      "optional": true
+    },
+    "cors": {
+      "optional": true
+    },
+    "multer": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "cookie": "^0.5.0",
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "express-async-errors": "^3.1.1",
-    "multer": "^1.4.5-lts.1",
     "restify": "^10.0.0",
     "restify-cors-middleware2": "^2.2.0"
   }
