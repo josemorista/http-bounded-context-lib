@@ -1,9 +1,9 @@
-import { ExpressServerAdapterLoader, Server } from '../../src';
-import { RestifyServerAdapterLoader } from '../../src';
+import { Server } from '../../src';
+import { ExpressServerAdapter } from '../../src/adapters/express';
+import { RestifyServerAdapter } from '../../src/adapters/restify';
 
 export default async (infra: 'express' | 'restify') => {
-  const ServerClass = infra === 'express' ? await ExpressServerAdapterLoader : await RestifyServerAdapterLoader;
-  const server = new ServerClass({});
+  const server = infra === 'express' ? new ExpressServerAdapter({}) : new RestifyServerAdapter({});
 
   server.get('/json', async (request, response) => {
     return response.json(request);

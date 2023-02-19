@@ -1,0 +1,1 @@
+export { RestifyServerAdapter } from './RestifyServerAdapter';
