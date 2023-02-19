@@ -5,6 +5,7 @@ import { basename } from 'path';
 import {
   createServer,
   plugins,
+  pre,
   ServerOptions as RestifyOptions,
   Server as RestifyServer,
   Request,
@@ -15,6 +16,8 @@ import { HttpResponse } from '../../entities/HttpResponse';
 
 type RestifyServerAdapterOptions = RestifyOptions & {
   corsOptions: Options;
+  mapBodyToParams: boolean;
+  mapQueryToParams: boolean;
 };
 
 const handlerDict = {
@@ -34,16 +37,18 @@ export class RestifyServerAdapter extends Server {
     this.app = createServer(options);
     const cors = corsMiddleware(options?.corsOptions || {});
     this.app.pre(cors.preflight);
+    this.app.pre(pre.sanitizePath());
+
     this.app.use(cors.actual);
     this.app.use(plugins.fullResponse());
     this.app.use(
       plugins.queryParser({
-        mapParams: true,
+        mapParams: !!options?.mapQueryToParams,
       })
     );
     this.app.use(
       plugins.bodyParser({
-        mapParams: true,
+        mapParams: !!options?.mapBodyToParams,
         uploadDir: this.config.uploadDir,
       })
     );

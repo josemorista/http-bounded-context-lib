@@ -23,6 +23,12 @@ let server: Server;
         expect(response.headers.get('content-type')).toMatch(/^(application\/json)/);
         expect(body).toHaveProperty('headers');
       });
+      it('Should return body as JSON on /json/', async () => {
+        const response = await fetch('http://localhost:3000/json/');
+        const body = await response.json();
+        expect(response.headers.get('content-type')).toMatch(/^(application\/json)/);
+        expect(body).toHaveProperty('headers');
+      });
       it('Should return statusCode correctly', async () => {
         const response = await fetch('http://localhost:3000/status?status=204');
         expect(response.status).toBe(204);
