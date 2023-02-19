@@ -4,10 +4,11 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc -p ./tsconfig-build.json",
     "lint": "npx eslint --fix --ext .ts,.js .",
     "clear": "rm -rf ./lib",
     "prebuild": "npm run clear",
+    "prepublishOnly": "npm run build",
     "test": "jest"
   },
   "repository": {

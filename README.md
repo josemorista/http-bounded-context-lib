@@ -2,12 +2,14 @@
 
 Abstração e desacoplamento de Frameworks HTTP em uma aplicação Node.Js
 
-## Bounded context
+### Referencial teórico
+
+### Bounded context
 
 > Um [bounded context](https://martinfowler.com/bliki/BoundedContext.html) é uma parte definida do software em que determinados termos, definições e regras se aplicam de forma consistente
 > ”Eric Evans” - Domain Driven Design
 
-## Liskov Substitution Principle
+### Liskov Substitution Principle
 
 O princípio define que objetos de uma superclasse devem ser substituíveis por objetos de suas subclasses sem quebrar a aplicação. Isso requer que os objetos de suas subclasses se comportem da mesma maneira que os objetos de sua superclasse.
 
@@ -15,17 +17,12 @@ Um método sobrescrito de uma subclasse precisa aceitar os mesmos valores de par
 
 Regras semelhantes se aplicam ao valor de retorno do método. O valor de retorno de um método da subclasse precisa obedecer às mesmas regras que o valor de retorno do método da superclasse.
 
-## GOF/FC Design Patterns
+### GOF/FC Design Patterns
 
 - Adapter
 - HOFs
 - Template Method
 - Command/Lambda functions
-- Dependency inversion
-- Maintaining SOLID principles with HttpControllers
-- Extras:
-  - Abstract Factories
-  - Value Objects
 
 ## Open Closed Principle
 
