@@ -13,7 +13,7 @@ export abstract class Router {
     }) as any;
   }
 
-  protected path(path?: string) {
+  protected prefixed(path?: string) {
     return `${this.prefix}${path || ''}`;
   }
 
