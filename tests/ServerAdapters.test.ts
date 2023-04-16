@@ -137,5 +137,29 @@ let server: Server;
         expect(response.status).toBe(204);
       });
     });
+
+    describe('[Cookies]', () => {
+      it('Should have correct cookies on response', async () => {
+        const response = await fetch('http://localhost:3000/cookies', {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            cookies: [
+              {
+                name: 'test1',
+                value: 'test1',
+                options: {
+                  httpOnly: true,
+                },
+              },
+              { name: 'test2', value: 'test2' },
+            ],
+          }),
+        });
+        expect(response.headers.get('set-cookie')).toBe('test1=test1; HttpOnly, test2=test2');
+      });
+    });
   });
 });

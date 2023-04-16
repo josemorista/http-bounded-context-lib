@@ -1,4 +1,4 @@
-import { serialize, CookieSerializeOptions } from 'cookie';
+import { serialize, CookieSerializeOptions, parse } from 'cookie';
 
 export class HttpObject {
   cookies: Record<string, string>;
@@ -11,12 +11,31 @@ export class HttpObject {
   }
 
   setCookie(name: string, value: string, options?: CookieSerializeOptions) {
-    this.cookies[name] = value;
     this.setHeader('set-cookie', serialize(name, value, options));
+    this.cookies[name] = value;
+  }
+
+  getCookie(name: string): string | undefined {
+    if (this.cookies[name]) return this.cookies[name];
+    const cookieHeader = this.getHeader('cookie');
+    if (cookieHeader) {
+      const cookies = parse(String(cookieHeader));
+      return cookies[name];
+    }
   }
 
   setHeader(name: string, value: string) {
-    this.headers[name.toLowerCase()] = value;
+    const _name = name.toLowerCase();
+    const current = this.headers[_name];
+    if (current) {
+      if (typeof current === 'string') {
+        this.headers[_name] = [current, value];
+        return;
+      }
+      this.headers[_name] = [...current, value];
+      return;
+    }
+    this.headers[_name] = value;
   }
 
   getHeader(name: string) {

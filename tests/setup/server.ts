@@ -56,6 +56,14 @@ export default async (infra: 'express' | 'restify') => {
     return response.sendStatus(204);
   });
 
+  server.post('/cookies', async (request, response) => {
+    const cookies = request.body.cookies;
+    for (const { name, value, options } of cookies) {
+      response.setCookie(name, value, options);
+    }
+    return response.json(response.headers);
+  });
+
   return new Promise<Server>((resolve) => {
     server.listen(3000, () => {
       resolve(server);
