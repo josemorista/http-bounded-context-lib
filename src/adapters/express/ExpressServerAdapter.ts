@@ -41,15 +41,22 @@ export class ExpressServerAdapter extends Server {
   private parseRequest(req: Request) {
     const query: HttpRequest['query'] = {};
     const url = new URL(`http://localhost${req.originalUrl}`);
+    let params: HttpRequest['params'] = {};
     for (const key of url.searchParams.keys()) {
       const values = url.searchParams.getAll(key);
       query[key] = values.length > 1 ? values : values[0];
+      if (this.config.mapQueryToParams) {
+        params[key] = query[key];
+      }
     }
-
+    if (this.config.mapBodyToParams && typeof req.body === 'object') {
+      params = { ...params, ...req.body };
+    }
+    params = { ...params, ...req.params };
     const request = new HttpRequest({
       headers: req.headers,
       query,
-      params: req.params,
+      params,
       url: req.url,
       path: req.path,
       body: req.body,

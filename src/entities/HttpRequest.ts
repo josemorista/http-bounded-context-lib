@@ -6,7 +6,7 @@ export class HttpRequest extends HttpObject {
   path: string;
   query: Record<string, string | Array<string> | undefined>;
   headers: Record<string, string | Array<string> | undefined>;
-  params: Record<string, string>;
+  params: Record<string, unknown>;
   files: Array<HttpRequestFile>;
   [key: string]: any;
 

@@ -1,9 +1,14 @@
 import { Server } from '../../src';
 import { ExpressServerAdapter } from '../../src/adapters/express';
+import { FastifyServerAdapter } from '../../src/adapters/fastify/FastifyServerAdapter';
 import { RestifyServerAdapter } from '../../src/adapters/restify';
 
-export default async (infra: 'express' | 'restify') => {
-  const server = infra === 'express' ? new ExpressServerAdapter({}) : new RestifyServerAdapter({});
+export default async (infra: 'express' | 'restify' | 'fastify') => {
+  const server = {
+    express: new ExpressServerAdapter({}),
+    fastify: new FastifyServerAdapter({}),
+    restify: new RestifyServerAdapter({}),
+  }[infra];
 
   server.get('/json', async (request, response) => {
     return response.json(request);

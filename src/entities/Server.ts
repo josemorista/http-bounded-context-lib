@@ -5,6 +5,8 @@ import { tmpdir } from 'os';
 
 export interface ServerOptions {
   uploadDir?: string;
+  mapQueryToParams?: boolean;
+  mapBodyToParams?: boolean;
 }
 
 type HttpErrorFn = (request: HttpRequest, response: HttpResponse, error: Error) => HttpResponse;

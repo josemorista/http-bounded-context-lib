@@ -2,7 +2,7 @@ import { Server } from '../src';
 import getServer from './setup/server';
 
 let server: Server;
-(['express', 'restify'] as const).forEach((adapter) => {
+(['express', 'restify', 'fastify'] as const).forEach((adapter) => {
   describe(`${adapter} server adapter tests`, () => {
     beforeAll(async () => {
       server = await getServer(adapter);

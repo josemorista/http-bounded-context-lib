@@ -16,8 +16,6 @@ import { HttpResponse } from '../../entities/HttpResponse';
 
 type RestifyServerAdapterOptions = RestifyOptions & {
   corsOptions: Options;
-  mapBodyToParams: boolean;
-  mapQueryToParams: boolean;
 };
 
 const handlerDict = {
@@ -43,12 +41,12 @@ export class RestifyServerAdapter extends Server {
     this.app.use(plugins.fullResponse());
     this.app.use(
       plugins.queryParser({
-        mapParams: !!options?.mapQueryToParams,
+        mapParams: !!this.config?.mapQueryToParams,
       })
     );
     this.app.use(
       plugins.bodyParser({
-        mapParams: !!options?.mapBodyToParams,
+        mapParams: !!this.config?.mapBodyToParams,
         uploadDir: this.config.uploadDir,
       })
     );

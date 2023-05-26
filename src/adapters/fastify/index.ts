@@ -1,0 +1,1 @@
+export { FastifyServerAdapter } from './FastifyServerAdapter';
