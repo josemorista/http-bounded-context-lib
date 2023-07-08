@@ -6,4 +6,4 @@ export type HttpHandler = (
   request: HttpRequest,
   response: HttpResponse,
   next: NextFunction
-) => Promise<void | HttpResponse>;
+) => Promise<void | HttpResponse> | void | HttpResponse;

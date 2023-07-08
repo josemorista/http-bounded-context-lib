@@ -104,6 +104,7 @@ export class RestifyServerAdapter extends Server {
           if (handlerResponse && handlerResponse instanceof HttpResponse)
             return this.parseResponse(res, handlerResponse);
         }
+        return this.parseResponse(res, response);
       } catch (error) {
         if (error instanceof Error && this.onError)
           return this.parseResponse(res, this.onError(request, response, error));

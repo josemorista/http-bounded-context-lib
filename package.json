@@ -60,7 +60,6 @@
   },
   "dependencies": {
     "cookie": "^0.5.0",
-    "fastify": "^4.17.0",
     "restify": "^10.0.0",
     "restify-cors-middleware2": "^2.2.0"
   }
