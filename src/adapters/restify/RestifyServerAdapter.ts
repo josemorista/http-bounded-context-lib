@@ -1,6 +1,7 @@
 import { HttpHandler } from '../../entities/HttpHandler';
 import { Server, ServerOptions } from '../../entities/Server';
 import corsMiddleware, { Options } from 'restify-cors-middleware2';
+import { HttpError as RestifyError } from 'restify-errors';
 import { basename } from 'path';
 import {
   createServer,
@@ -15,7 +16,7 @@ import { HttpRequest } from '../../entities/HttpRequest';
 import { HttpResponse } from '../../entities/HttpResponse';
 
 type RestifyServerAdapterOptions = RestifyOptions & {
-  corsOptions: Options;
+  corsOptions?: Options;
 };
 
 const handlerDict = {
@@ -95,7 +96,7 @@ export class RestifyServerAdapter extends Server {
   ): void {
     this.app[handlerDict[method]](path, async (req, res) => {
       const request = this.parseRequest(req);
-      const response = new HttpResponse();
+      let response = new HttpResponse();
       try {
         for (const middleware of middlewares) {
           const handlerResponse = await middleware(request, response, (error) => {
@@ -106,9 +107,16 @@ export class RestifyServerAdapter extends Server {
         }
         return this.parseResponse(res, response);
       } catch (error) {
-        if (error instanceof Error && this.onError)
-          return this.parseResponse(res, this.onError(request, response, error));
-        throw error;
+        if (error instanceof RestifyError) {
+          if (!response.body) {
+            response.json(error.body);
+          }
+          response.status(error.statusCode);
+        }
+        if (error instanceof Error && this.onError) {
+          response = await this.onError(request, response, error);
+        }
+        return this.parseResponse(res, response);
       }
     });
   }

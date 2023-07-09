@@ -33,7 +33,7 @@ Estabelece que "_entidades de software (classes, módulos, funções, etc.) deve
 A api principal baseia-se fortemente na implementação de um servidor Http presente no microframework Restify. A entidade Server descreve o contrato disponível para a implementação de aplicações e adaptadores:
 
 ```typescript
-type HttpErrorFn = (request: HttpRequest, response: HttpResponse, error: Error) => HttpResponse;
+type HttpErrorFn = (request: HttpRequest, response: HttpResponse, error: Error) => HttpResponse | Promise<HttpResponse>;
 export interface ServerOptions {
   uploadDir?: string;
 }
@@ -73,8 +73,6 @@ Implementação do contrato utilizando como base a infraestrutura Restify v10.x.
 ```typescript
 type RestifyServerAdapterOptions = RestifyOptions & {
   corsOptions: Options; // Opções de cors no modelo presente no plugin restify-cors-middleware2
-  mapBodyToParams: boolean; // Realiza o mapeamento de atributos vindos do corpo da requisição para request.params
-  mapQueryToParams: boolean; // Realiza o mapeamento de atributos vindos como parâmetros de busca da requisição para request.params
 };
 ```
 

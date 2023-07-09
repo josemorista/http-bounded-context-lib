@@ -9,9 +9,9 @@ export interface ServerOptions {
   mapBodyToParams?: boolean;
 }
 
-type HttpErrorFn = (request: HttpRequest, response: HttpResponse, error: Error) => HttpResponse;
+type HttpErrorFn = (request: HttpRequest, response: HttpResponse, error: Error) => HttpResponse | Promise<HttpResponse>;
 export abstract class Server {
-  onError?: HttpErrorFn;
+  protected onError?: HttpErrorFn;
   config: ServerOptions;
 
   constructor(config: ServerOptions) {

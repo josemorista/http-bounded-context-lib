@@ -72,7 +72,7 @@ export class ExpressServerAdapter extends Server {
   ): void {
     this.app[method](path, this.multer.any(), async (req, res) => {
       const request = this.parseRequest(req);
-      const response = new HttpResponse();
+      let response = new HttpResponse();
       try {
         for (const middleware of middlewares) {
           const handlerResponse = await middleware(request, response, (error) => {
@@ -83,9 +83,10 @@ export class ExpressServerAdapter extends Server {
         }
         return this.parseResponse(res, response);
       } catch (error) {
-        if (error instanceof Error && this.onError)
-          return this.parseResponse(res, this.onError(request, response, error));
-        throw error;
+        if (error instanceof Error && this.onError) {
+          response = await this.onError(request, response, error);
+        }
+        return this.parseResponse(res, response);
       }
     });
   }
